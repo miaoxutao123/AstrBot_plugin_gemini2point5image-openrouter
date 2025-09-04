@@ -36,5 +36,40 @@
         "description": "（没特殊需求别改，仅当nap和bot不在一个服务器时填写，需配合文件接收脚本）NAP cat 所处服务器接收文件端口，在同一服务器上可以不填",
         "type": "int",
         "default": 3658
+    },
+    "rate_limit_enabled": {
+        "description": "是否启用频率限制功能",
+        "type": "bool",
+        "hint": "开启后将限制每个群组的图片生成频率，防止滥用",
+        "default": true,
+        "obvious_hint": false
+    },
+    "rate_limit_max_requests": {
+        "description": "频率限制：每个时间窗口内的最大请求次数",
+        "type": "int",
+        "hint": "每个群组在指定时间窗口内允许的最大图片生成次数",
+        "default": 10,
+        "obvious_hint": false
+    },
+    "rate_limit_time_window": {
+        "description": "频率限制：时间窗口长度（秒）",
+        "type": "int",
+        "hint": "频率限制的时间窗口，使用滑动窗口算法",
+        "default": 60,
+        "obvious_hint": false
+    },
+    "rate_limit_message": {
+        "description": "频率限制提示消息模板",
+        "type": "string",
+        "hint": "达到频率限制时显示的消息，支持 {remaining_time} 占位符显示剩余冷却时间",
+        "default": "⚠️ 图片生成频率限制：当前群组已达到限制（{max_requests}次/{time_window}秒）。请在 {remaining_time} 秒后再试。",
+        "obvious_hint": false
+    },
+    "rate_limit_cleanup_interval": {
+        "description": "频率限制：内存清理间隔（秒）",
+        "type": "int",
+        "hint": "自动清理过期记录的间隔时间，避免内存泄漏",
+        "default": 300,
+        "obvious_hint": false
     }
 }
