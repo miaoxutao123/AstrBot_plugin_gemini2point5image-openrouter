@@ -3,7 +3,10 @@
         "description": "OpenRouter API 密钥列表",
         "type": "list",
         "hint": "请前往 https://openrouter.ai/ 注册账号，并获取多个 OpenRouter API Key。支持多个密钥自动轮换，当一个密钥额度耗尽时会自动切换到下一个",
-        "default": ["OpenRouter_API_Key_1", "OpenRouter_API_Key_2"],
+        "default": [
+            "OpenRouter_API_Key_1",
+            "OpenRouter_API_Key_2"
+        ],
         "obvious_hint": true
     },
     "custom_api_base": {
@@ -36,5 +39,62 @@
         "description": "（没特殊需求别改，仅当nap和bot不在一个服务器时填写，需配合文件接收脚本）NAP cat 所处服务器接收文件端口，在同一服务器上可以不填",
         "type": "int",
         "default": 3658
+    },
+    "rate_limit": {
+        "description": "绘图频率限制",
+        "type": "object",
+        "items": {
+            "enabled": {
+                "description": "是否启用绘图频率限制",
+                "type": "bool",
+                "default": false
+            },
+            "default_limit": {
+                "description": "默认的每日绘图次数限制",
+                "type": "int",
+                "default": 10
+            },
+            "reset_interval_minutes": {
+                "description": "绘图次数重置周期（分钟）",
+                "type": "int",
+                "default": 1440
+            },
+            "group_limits": {
+                "description": "特定群组的每日绘图次数限制",
+                "type": "list",
+                "default": [],
+                "items": {
+                    "type": "object",
+                    "items": {
+                        "group_id": {
+                            "description": "QQ群号",
+                            "type": "string"
+                        },
+                        "limit": {
+                            "description": "每日绘图次数",
+                            "type": "int"
+                        }
+                    }
+                }
+            },
+            "user_limits": {
+                "description": "特定用户的每日绘图次数限制",
+                "type": "list",
+                "default": [],
+                "items": {
+                    "type": "object",
+                    "items": {
+                        "user_id": {
+                            "description": "QQ号",
+                            "type": "string"
+                        },
+                        "limit": {
+                            "description": "每日绘图次数",
+                            "type": "int"
+                        }
+                    }
+                }
+            }
+        }
     }
 }
