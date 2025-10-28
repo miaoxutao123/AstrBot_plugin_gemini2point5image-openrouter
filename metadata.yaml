@@ -1,6 +1,6 @@
 name: gemini-25-image-openrouter # 这是你的插件的唯一识别名。
 desc: 使用openrouter的免费api生成图片 # 插件简短描述
-version: v1.6.1 # 插件版本号。格式：v1.1.1 或者 v1.1
+version: v1.8.1 # 插件版本号。格式：v1.1.1 或者 v1.1
 author: 喵喵 # 作者
 repo: https://github.com/miaoxutao123/AstrBot_plugin_gemini2point5image-openrouter # 插件的仓库地址
 tools:
