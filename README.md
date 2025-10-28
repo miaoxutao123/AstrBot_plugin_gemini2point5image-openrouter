@@ -155,7 +155,7 @@ AstrBot_plugin_gemini2.5image-openrouter/
 
 ## 版本信息
 
-- **当前版本**: v1.6.1
+- **当前版本**: v1.8.1
 - **更新内容**:
   - 🔄 对齐 `metadata.yaml` 与处理函数签名，修复工具参数被忽略的问题
   - 🧭 增强参数兜底与日志记录，便于定位缺参或路由问题
@@ -164,7 +164,7 @@ AstrBot_plugin_gemini2.5image-openrouter/
 ## 开发信息
 
 - **作者**: 喵喵
-- **版本**: v1.6.1
+- **版本**: v1.8.1
 - **许可证**: 见 LICENSE 文件
 - **项目地址**: [GitHub Repository](https://github.com/miaoxutao123/AstrBot_plugin_gemini2point5image-openrouter)
 
