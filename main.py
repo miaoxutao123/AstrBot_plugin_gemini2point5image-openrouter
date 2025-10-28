@@ -85,7 +85,27 @@ class MyPlugin(Star):
             logger.error(f"发送图片时出现未预期的错误: {e}，将退回到本地文件发送")
             return Image.fromFileSystem(image_path)
 
-    @llm_tool(name="gemini-pic-gen")
+    @llm_tool(
+        name="gemini-pic-gen",
+        metadata={
+            "name": "gemini-pic-gen",
+            "description": "使用Gemini 2.5 Flash Image Preview模型生成图像",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "image_description": {
+                        "type": "string",
+                        "description": "图像描述文本",
+                    },
+                    "use_reference_images": {
+                        "type": "boolean",
+                        "description": "是否使用上下文中的参考图像",
+                    },
+                },
+                "required": ["image_description"],
+            },
+        },
+    )
     async def pic_gen(
         self,
         event: AstrMessageEvent,
