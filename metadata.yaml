@@ -1,5 +1,23 @@
 name: gemini-25-image-openrouter # 这是你的插件的唯一识别名。
 desc: 使用openrouter的免费api生成图片 # 插件简短描述
-version: v1.8 # 插件版本号。格式：v1.1.1 或者 v1.1
+version: v1.8.1 # 插件版本号。格式：v1.1.1 或者 v1.1
 author: 喵喵 # 作者
 repo: https://github.com/miaoxutao123/AstrBot_plugin_gemini2point5image-openrouter # 插件的仓库地址
+tools:
+  - name: gemini-pic-gen
+    display_name: Gemini 图片生成
+    desc: Generate or edit images with Gemini 2.5 via OpenRouter.
+    desc_zh: 使用 OpenRouter 的 Gemini 2.5 模型进行文生图或图生图。
+    parameters:
+      type: object
+      properties:
+        image_description:
+          type: string
+          description: Description of the image to generate or edit.
+          description_zh: 要生成或编辑的图像描述。
+        use_reference_images:
+          type: boolean
+          description: Whether to use images from the current conversation as references.
+          description_zh: 是否使用当前会话中的图片作为参考。
+      required:
+        - image_description
