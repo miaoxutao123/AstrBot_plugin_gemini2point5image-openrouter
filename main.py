@@ -86,7 +86,13 @@ class MyPlugin(Star):
             return Image.fromFileSystem(image_path)
 
     @llm_tool(name="gemini-pic-gen")
-    async def pic_gen(self, event: AstrMessageEvent, image_description: str, use_reference_images: bool = True):
+    async def pic_gen(
+        self,
+        event: AstrMessageEvent,
+        image_description: str = "",
+        use_reference_images: bool = False,
+        **kwargs,
+    ):
         """
             Generate or modify images using the Gemini model via the OpenRouter API.
             When a user requests image generation or drawing, call this function.
@@ -121,7 +127,64 @@ class MyPlugin(Star):
         """
         # 加载全局配置，确保使用最新的配置
         await self._load_global_config()
-        
+
+        def _safe_repr(value):
+            try:
+                return repr(value)
+            except Exception:
+                return "<unrepresentable>"
+
+        incoming_params = {
+            "image_description": image_description,
+            "use_reference_images": use_reference_images,
+        }
+        extra_params = {k: _safe_repr(v) for k, v in kwargs.items() if k not in incoming_params}
+        logger.info(
+            f"gemini-pic-gen called with raw params: {incoming_params}, extra kwargs: {extra_params}"
+        )
+
+        if isinstance(use_reference_images, str):
+            use_reference_images = use_reference_images.lower() in {"true", "1", "yes", "y"}
+        elif isinstance(use_reference_images, (int, float)):
+            use_reference_images = bool(use_reference_images)
+        elif use_reference_images is None:
+            use_reference_images = False
+        else:
+            use_reference_images = bool(use_reference_images)
+
+        logger.info(
+            f"当前图像模型: {self.model_name}, 最大重试次数: {self.max_retry_attempts}, 使用参考图: {use_reference_images}"
+        )
+
+        if not image_description:
+            fallback_description = ""
+            if kwargs:
+                fallback_description = (
+                    kwargs.get("image_description")
+                    or kwargs.get("prompt")
+                    or kwargs.get("description")
+                    or kwargs.get("text")
+                    or ""
+                )
+
+            if not fallback_description and hasattr(event, "message_obj") and event.message_obj:
+                message_obj = event.message_obj
+                if hasattr(message_obj, "message") and message_obj.message:
+                    fallback_parts = []
+                    for comp in message_obj.message:
+                        if isinstance(comp, Plain):
+                            content = getattr(comp, "text", None) or getattr(comp, "content", None)
+                            if content:
+                                fallback_parts.append(content.strip())
+                    fallback_description = " ".join(part for part in fallback_parts if part)
+
+            image_description = (fallback_description or "").strip()
+
+        if not image_description:
+            guidance = "请在指令后添加描述，例如：文生图 一只蓝猫。"
+            yield event.plain_result(guidance)
+            return
+
         openrouter_api_keys = self.openrouter_api_keys
         nap_server_address = self.nap_server_address
         nap_server_port = self.nap_server_port
